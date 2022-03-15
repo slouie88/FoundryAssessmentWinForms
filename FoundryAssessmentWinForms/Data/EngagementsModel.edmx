@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EngagementsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Engagements">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="started" Type="datetime" Nullable="false" />
+          <Property Name="ended" Type="datetime" />
+          <Property Name="employee" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="client" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Engagemen__clien__2C3393D0">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Engagements" Type="Self.Engagements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Engagements">
+              <PropertyRef Name="client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Engagemen__emplo__2B3F6F97">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Engagements" Type="Self.Engagements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Engagements">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EngagementsDBModelStoreContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Engagements" EntityType="Self.Engagements" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Engagemen__clien__2C3393D0" Association="Self.FK__Engagemen__clien__2C3393D0">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Engagements" EntitySet="Engagements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Engagemen__emplo__2B3F6F97" Association="Self.FK__Engagemen__emplo__2B3F6F97">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Engagements" EntitySet="Engagements" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EngagementsDBModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Engagements" Relationship="Self.FK__Engagemen__clien__2C3393D0" FromRole="Clients" ToRole="Engagements" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Engagements" Relationship="Self.FK__Engagemen__emplo__2B3F6F97" FromRole="Employees" ToRole="Engagements" />
+        </EntityType>
+        <EntityType Name="Engagement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="started" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ended" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__Engagemen__clien__2C3393D0" FromRole="Engagements" ToRole="Clients" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Engagemen__emplo__2B3F6F97" FromRole="Engagements" ToRole="Employees" />
+        </EntityType>
+        <Association Name="FK__Engagemen__clien__2C3393D0">
+          <End Role="Clients" Type="Self.Client" Multiplicity="1" />
+          <End Role="Engagements" Type="Self.Engagement" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Engagemen__emplo__2B3F6F97">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Engagements" Type="Self.Engagement" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="EngagementsContext">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Engagements" EntityType="Self.Engagement" />
+          <AssociationSet Name="FK__Engagemen__clien__2C3393D0" Association="Self.FK__Engagemen__clien__2C3393D0">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Engagements" EntitySet="Engagements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Engagemen__emplo__2B3F6F97" Association="Self.FK__Engagemen__emplo__2B3F6F97">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Engagements" EntitySet="Engagements" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="EngagementsDBModelStoreContainer" CdmEntityContainer="EngagementsContext">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="EngagementsDBModel.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="EngagementsDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Engagements">
+            <EntityTypeMapping TypeName="EngagementsDBModel.Engagement">
+              <MappingFragment StoreEntitySet="Engagements">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="started" ColumnName="started" />
+                <ScalarProperty Name="ended" ColumnName="ended" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__Engagemen__clien__2C3393D0" TypeName="EngagementsDBModel.FK__Engagemen__clien__2C3393D0" StoreEntitySet="Engagements">
+            <EndProperty Name="Clients">
+              <ScalarProperty Name="id" ColumnName="client" />
+            </EndProperty>
+            <EndProperty Name="Engagements">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Engagemen__emplo__2B3F6F97" TypeName="EngagementsDBModel.FK__Engagemen__emplo__2B3F6F97" StoreEntitySet="Engagements">
+            <EndProperty Name="Employees">
+              <ScalarProperty Name="id" ColumnName="employee" />
+            </EndProperty>
+            <EndProperty Name="Engagements">
+              <ScalarProperty Name="id" ColumnName="id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
